@@ -1,6 +1,5 @@
 import { PrismaClient } from '../prisma/generated/client'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
-
 import Database from 'better-sqlite3'
 
 // Prevent multiple PrismaClient instances during hot reloads in development
@@ -9,13 +8,11 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 const dbPath = process.env.DATABASE_URL?.replace('file:', '') || './prisma/dev.db'
-const db = new Database(dbPath)
-const adapter = new PrismaBetterSqlite3(db)
 
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
-    adapter,
+    adapter: new PrismaBetterSqlite3(new Database(dbPath)),
     log:
       process.env.NODE_ENV === 'development'
         ? ['error', 'warn']
