@@ -1,0 +1,155 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+// -------------------------------------------------------------
+// 1. Admin Authentication Model
+// -------------------------------------------------------------
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String // bcrypt hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admin_users")
+}
+
+// -------------------------------------------------------------
+// 2. Product Categories
+// -------------------------------------------------------------
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("categories")
+}
+
+// -------------------------------------------------------------
+// 3. Industrial Use Cases & Applications
+// -------------------------------------------------------------
+model UseCase {
+  id          String           @id @default(cuid())
+  title       String           @unique
+  slug        String           @unique
+  description String
+  imageUrl    String?
+  products    ProductUseCase[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@map("use_cases")
+}
+
+// -------------------------------------------------------------
+// 4. Products Catalog
+// -------------------------------------------------------------
+model Product {
+  id             String           @id @default(cuid())
+  name           String
+  slug           String           @unique
+  description    String
+  shortDesc      String?
+  specifications String? // JSON string: Record<string, string> e.g. {"Adhesion": "25 N/25mm"}
+  imageUrl       String?
+  galleryImages  String? // JSON string: string[]
+  categoryId     String
+  category       Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  useCases       ProductUseCase[]
+  enquiryItems   EnquiryItem[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([categoryId])
+  @@map("products")
+}
+
+// -------------------------------------------------------------
+// 5. Product <-> UseCase Many-to-Many Junction Table
+// -------------------------------------------------------------
+model ProductUseCase {
+  productId String
+  useCaseId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  useCase   UseCase @relation(fields: [useCaseId], references: [id], onDelete: Cascade)
+
+  @@id([productId, useCaseId])
+  @@index([useCaseId])
+  @@map("product_use_cases")
+}
+
+// -------------------------------------------------------------
+// 6. Homepage Hero Carousel Slides
+// -------------------------------------------------------------
+model HeroImage {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String?
+  imageUrl  String
+  linkUrl   String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("hero_images")
+}
+
+// -------------------------------------------------------------
+// 7. Dynamic Settings (Contact Info & SMTP Configuration)
+// -------------------------------------------------------------
+model Setting {
+  key         String   @id // e.g. "COMPANY_PHONE", "WHATSAPP_NUMBER", "SALES_EMAIL", "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("settings")
+}
+
+// -------------------------------------------------------------
+// 8. RFQ Enquiries
+// -------------------------------------------------------------
+model Enquiry {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  message   String?
+  status    String        @default("PENDING") // PENDING, CONTACTED, CLOSED
+  items     EnquiryItem[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("enquiries")
+}
+
+// -------------------------------------------------------------
+// 9. Enquiry Items (Cart Line Items)
+// -------------------------------------------------------------
+model EnquiryItem {
+  id        String  @id @default(cuid())
+  enquiryId String
+  productId String
+  quantity  Int     @default(1)
+  notes     String?
+  enquiry   Enquiry @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([enquiryId])
+  @@index([productId])
+  @@map("enquiry_items")
+}
