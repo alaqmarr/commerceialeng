@@ -6,7 +6,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-const dbPath = process.env.DATABASE_URL || 'file:./prisma/dev.db'
+const dbPath = process.env.DATABASE_URL || 'file:./dev.db'
 
 export const prisma =
   globalForPrisma.prisma ??
