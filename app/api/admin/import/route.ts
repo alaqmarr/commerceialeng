@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
-import Database from 'better-sqlite3'
+import sqlite3 from 'sqlite3'
+import { open } from 'sqlite'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
@@ -27,13 +28,17 @@ export async function POST(req: NextRequest) {
 
     let db;
     try {
-      db = new Database(tmpFilePath, { readonly: true })
+      db = await open({
+        filename: tmpFilePath,
+        driver: sqlite3.Database,
+        mode: sqlite3.OPEN_READONLY
+      })
       
       // Read data from the uploaded DB
-      const categories = db.prepare('SELECT * FROM categories').all() as any[]
-      const useCases = db.prepare('SELECT * FROM use_cases').all() as any[]
-      const products = db.prepare('SELECT * FROM products').all() as any[]
-      const productUseCases = db.prepare('SELECT * FROM product_use_cases').all() as any[]
+      const categories = await db.all('SELECT * FROM categories') as any[]
+      const useCases = await db.all('SELECT * FROM use_cases') as any[]
+      const products = await db.all('SELECT * FROM products') as any[]
+      const productUseCases = await db.all('SELECT * FROM product_use_cases') as any[]
 
       // Perform a bulk upsert using a transaction
       await prisma.$transaction(async (tx) => {
@@ -118,8 +123,6 @@ export async function POST(req: NextRequest) {
         }
 
         // Product Use Cases
-        // Easiest is to delete existing relations for these products and recreate, or upsert.
-        // We'll upsert to be safe.
         for (const puc of productUseCases) {
           await tx.productUseCase.upsert({
             where: {
@@ -141,7 +144,7 @@ export async function POST(req: NextRequest) {
       console.error('Import Error:', e)
       return NextResponse.json({ error: 'Failed to process database file: ' + e.message }, { status: 500 })
     } finally {
-      if (db) db.close()
+      if (db) await db.close()
       try {
         fs.unlinkSync(tmpFilePath)
       } catch (e) {}
