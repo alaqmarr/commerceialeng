@@ -119,6 +119,13 @@ export default function AdminSettingsPage() {
         method: "POST",
         body: formData,
       });
+      
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(text || "Server returned a non-JSON error. The file might be too large.");
+      }
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to process database");
       setDbSuccess(data.message || "Database imported successfully");
