@@ -18,6 +18,8 @@ interface ContactViewProps {
     whatsapp?: string;
     address?: string;
     cleanWhatsapp?: string;
+    departmentContacts?: string;
+    mapLocation?: string;
   };
 }
 
@@ -132,6 +134,24 @@ export function ContactView({ settings }: ContactViewProps) {
               </div>
             </div>
 
+            {settings?.departmentContacts && (
+              <div className="rounded-xl border border-gray-200 bg-gray-50/80 p-5 space-y-2">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-50 text-red-600 mt-0.5 shrink-0">
+                    <Phone className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="font-sans text-[11px] uppercase tracking-wider text-gray-500 font-medium">
+                      Department Contacts
+                    </span>
+                    <p className="text-xs sm:text-sm text-gray-700 mt-1 leading-relaxed whitespace-pre-wrap">
+                      {settings.departmentContacts}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Operating Hours */}
             <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 flex items-center gap-3 text-xs text-gray-600 font-sans">
               <Clock className="h-4 w-4 text-red-600 shrink-0" />
@@ -140,8 +160,17 @@ export function ContactView({ settings }: ContactViewProps) {
           </div>
 
           {/* Right Column: Interactive Form */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-8">
             <ContactForm />
+            
+            {settings?.mapLocation && (
+              <div className="rounded-xl border border-gray-200 bg-white p-2 shadow-sm overflow-hidden h-[300px] w-full relative">
+                <div 
+                  className="w-full h-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:border-0 rounded-lg overflow-hidden"
+                  dangerouslySetInnerHTML={{ __html: settings.mapLocation }} 
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

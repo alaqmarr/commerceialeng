@@ -198,6 +198,7 @@ exports.Prisma.EnquiryScalarFieldEnum = {
   quoteGstTotal: 'quoteGstTotal',
   quoteGrandTotal: 'quoteGrandTotal',
   bankDetails: 'bankDetails',
+  termsAndConditions: 'termsAndConditions',
   quoteSentAt: 'quoteSentAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

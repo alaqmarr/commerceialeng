@@ -10,7 +10,9 @@ export default async function AdminEnquiryDetailPage({ params }: { params: Promi
     if (!enquiry) {
       notFound();
     }
-    return <EnquiryQuoteManager initialEnquiry={enquiry} />;
+    const { getContactSettingsQuery } = await import('@/modules/settings/queries/get-contact-settings.query');
+    const settings = await getContactSettingsQuery();
+    return <EnquiryQuoteManager initialEnquiry={enquiry} defaultSettings={{ bankDetails: settings.bankDetails, termsAndConditions: settings.defaultTerms }} />;
   } catch (error) {
     notFound();
   }

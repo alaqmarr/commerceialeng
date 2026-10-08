@@ -9297,6 +9297,7 @@ export namespace Prisma {
     quoteGstTotal: number | null
     quoteGrandTotal: number | null
     bankDetails: string | null
+    termsAndConditions: string | null
     quoteSentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9316,6 +9317,7 @@ export namespace Prisma {
     quoteGstTotal: number | null
     quoteGrandTotal: number | null
     bankDetails: string | null
+    termsAndConditions: string | null
     quoteSentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -9335,6 +9337,7 @@ export namespace Prisma {
     quoteGstTotal: number
     quoteGrandTotal: number
     bankDetails: number
+    termsAndConditions: number
     quoteSentAt: number
     createdAt: number
     updatedAt: number
@@ -9368,6 +9371,7 @@ export namespace Prisma {
     quoteGstTotal?: true
     quoteGrandTotal?: true
     bankDetails?: true
+    termsAndConditions?: true
     quoteSentAt?: true
     createdAt?: true
     updatedAt?: true
@@ -9387,6 +9391,7 @@ export namespace Prisma {
     quoteGstTotal?: true
     quoteGrandTotal?: true
     bankDetails?: true
+    termsAndConditions?: true
     quoteSentAt?: true
     createdAt?: true
     updatedAt?: true
@@ -9406,6 +9411,7 @@ export namespace Prisma {
     quoteGstTotal?: true
     quoteGrandTotal?: true
     bankDetails?: true
+    termsAndConditions?: true
     quoteSentAt?: true
     createdAt?: true
     updatedAt?: true
@@ -9512,6 +9518,7 @@ export namespace Prisma {
     quoteGstTotal: number | null
     quoteGrandTotal: number | null
     bankDetails: string | null
+    termsAndConditions: string | null
     quoteSentAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -9550,6 +9557,7 @@ export namespace Prisma {
     quoteGstTotal?: boolean
     quoteGrandTotal?: boolean
     bankDetails?: boolean
+    termsAndConditions?: boolean
     quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9571,6 +9579,7 @@ export namespace Prisma {
     quoteGstTotal?: boolean
     quoteGrandTotal?: boolean
     bankDetails?: boolean
+    termsAndConditions?: boolean
     quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9590,6 +9599,7 @@ export namespace Prisma {
     quoteGstTotal?: boolean
     quoteGrandTotal?: boolean
     bankDetails?: boolean
+    termsAndConditions?: boolean
     quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9609,12 +9619,13 @@ export namespace Prisma {
     quoteGstTotal?: boolean
     quoteGrandTotal?: boolean
     bankDetails?: boolean
+    termsAndConditions?: boolean
     quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EnquiryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "company" | "gstNumber" | "message" | "status" | "isQuote" | "quoteSubtotal" | "quoteGstTotal" | "quoteGrandTotal" | "bankDetails" | "quoteSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["enquiry"]>
+  export type EnquiryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "company" | "gstNumber" | "message" | "status" | "isQuote" | "quoteSubtotal" | "quoteGstTotal" | "quoteGrandTotal" | "bankDetails" | "termsAndConditions" | "quoteSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["enquiry"]>
   export type EnquiryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Enquiry$itemsArgs<ExtArgs>
     _count?: boolean | EnquiryCountOutputTypeDefaultArgs<ExtArgs>
@@ -9641,6 +9652,7 @@ export namespace Prisma {
       quoteGstTotal: number | null
       quoteGrandTotal: number | null
       bankDetails: string | null
+      termsAndConditions: string | null
       quoteSentAt: Date | null
       createdAt: Date
       updatedAt: Date
@@ -10081,6 +10093,7 @@ export namespace Prisma {
     readonly quoteGstTotal: FieldRef<"Enquiry", 'Float'>
     readonly quoteGrandTotal: FieldRef<"Enquiry", 'Float'>
     readonly bankDetails: FieldRef<"Enquiry", 'String'>
+    readonly termsAndConditions: FieldRef<"Enquiry", 'String'>
     readonly quoteSentAt: FieldRef<"Enquiry", 'DateTime'>
     readonly createdAt: FieldRef<"Enquiry", 'DateTime'>
     readonly updatedAt: FieldRef<"Enquiry", 'DateTime'>
@@ -11767,6 +11780,7 @@ export namespace Prisma {
     quoteGstTotal: 'quoteGstTotal',
     quoteGrandTotal: 'quoteGrandTotal',
     bankDetails: 'bankDetails',
+    termsAndConditions: 'termsAndConditions',
     quoteSentAt: 'quoteSentAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -12307,6 +12321,7 @@ export namespace Prisma {
     quoteGstTotal?: FloatNullableFilter<"Enquiry"> | number | null
     quoteGrandTotal?: FloatNullableFilter<"Enquiry"> | number | null
     bankDetails?: StringNullableFilter<"Enquiry"> | string | null
+    termsAndConditions?: StringNullableFilter<"Enquiry"> | string | null
     quoteSentAt?: DateTimeNullableFilter<"Enquiry"> | Date | string | null
     createdAt?: DateTimeFilter<"Enquiry"> | Date | string
     updatedAt?: DateTimeFilter<"Enquiry"> | Date | string
@@ -12327,6 +12342,7 @@ export namespace Prisma {
     quoteGstTotal?: SortOrderInput | SortOrder
     quoteGrandTotal?: SortOrderInput | SortOrder
     bankDetails?: SortOrderInput | SortOrder
+    termsAndConditions?: SortOrderInput | SortOrder
     quoteSentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12350,6 +12366,7 @@ export namespace Prisma {
     quoteGstTotal?: FloatNullableFilter<"Enquiry"> | number | null
     quoteGrandTotal?: FloatNullableFilter<"Enquiry"> | number | null
     bankDetails?: StringNullableFilter<"Enquiry"> | string | null
+    termsAndConditions?: StringNullableFilter<"Enquiry"> | string | null
     quoteSentAt?: DateTimeNullableFilter<"Enquiry"> | Date | string | null
     createdAt?: DateTimeFilter<"Enquiry"> | Date | string
     updatedAt?: DateTimeFilter<"Enquiry"> | Date | string
@@ -12370,6 +12387,7 @@ export namespace Prisma {
     quoteGstTotal?: SortOrderInput | SortOrder
     quoteGrandTotal?: SortOrderInput | SortOrder
     bankDetails?: SortOrderInput | SortOrder
+    termsAndConditions?: SortOrderInput | SortOrder
     quoteSentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12397,6 +12415,7 @@ export namespace Prisma {
     quoteGstTotal?: FloatNullableWithAggregatesFilter<"Enquiry"> | number | null
     quoteGrandTotal?: FloatNullableWithAggregatesFilter<"Enquiry"> | number | null
     bankDetails?: StringNullableWithAggregatesFilter<"Enquiry"> | string | null
+    termsAndConditions?: StringNullableWithAggregatesFilter<"Enquiry"> | string | null
     quoteSentAt?: DateTimeNullableWithAggregatesFilter<"Enquiry"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Enquiry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Enquiry"> | Date | string
@@ -12969,6 +12988,7 @@ export namespace Prisma {
     quoteGstTotal?: number | null
     quoteGrandTotal?: number | null
     bankDetails?: string | null
+    termsAndConditions?: string | null
     quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12989,6 +13009,7 @@ export namespace Prisma {
     quoteGstTotal?: number | null
     quoteGrandTotal?: number | null
     bankDetails?: string | null
+    termsAndConditions?: string | null
     quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13009,6 +13030,7 @@ export namespace Prisma {
     quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    termsAndConditions?: NullableStringFieldUpdateOperationsInput | string | null
     quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13029,6 +13051,7 @@ export namespace Prisma {
     quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    termsAndConditions?: NullableStringFieldUpdateOperationsInput | string | null
     quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13049,6 +13072,7 @@ export namespace Prisma {
     quoteGstTotal?: number | null
     quoteGrandTotal?: number | null
     bankDetails?: string | null
+    termsAndConditions?: string | null
     quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13068,6 +13092,7 @@ export namespace Prisma {
     quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    termsAndConditions?: NullableStringFieldUpdateOperationsInput | string | null
     quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13087,6 +13112,7 @@ export namespace Prisma {
     quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    termsAndConditions?: NullableStringFieldUpdateOperationsInput | string | null
     quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13587,6 +13613,7 @@ export namespace Prisma {
     quoteGstTotal?: SortOrder
     quoteGrandTotal?: SortOrder
     bankDetails?: SortOrder
+    termsAndConditions?: SortOrder
     quoteSentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13612,6 +13639,7 @@ export namespace Prisma {
     quoteGstTotal?: SortOrder
     quoteGrandTotal?: SortOrder
     bankDetails?: SortOrder
+    termsAndConditions?: SortOrder
     quoteSentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13631,6 +13659,7 @@ export namespace Prisma {
     quoteGstTotal?: SortOrder
     quoteGrandTotal?: SortOrder
     bankDetails?: SortOrder
+    termsAndConditions?: SortOrder
     quoteSentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14683,6 +14712,7 @@ export namespace Prisma {
     quoteGstTotal?: number | null
     quoteGrandTotal?: number | null
     bankDetails?: string | null
+    termsAndConditions?: string | null
     quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14702,6 +14732,7 @@ export namespace Prisma {
     quoteGstTotal?: number | null
     quoteGrandTotal?: number | null
     bankDetails?: string | null
+    termsAndConditions?: string | null
     quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14772,6 +14803,7 @@ export namespace Prisma {
     quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    termsAndConditions?: NullableStringFieldUpdateOperationsInput | string | null
     quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14791,6 +14823,7 @@ export namespace Prisma {
     quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
     bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    termsAndConditions?: NullableStringFieldUpdateOperationsInput | string | null
     quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

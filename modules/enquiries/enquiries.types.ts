@@ -65,6 +65,7 @@ export interface EnquiryDTO {
   quoteGstTotal?: number | null;
   quoteGrandTotal?: number | null;
   bankDetails?: string | null;
+  termsAndConditions?: string | null;
   quoteSentAt?: string | Date | null;
   items: EnquiryItemDTO[];
   createdAt: string | Date;

@@ -77,7 +77,6 @@ export function AdminCreateQuoteManager() {
         body: JSON.stringify({
           isQuote: true,
           items: data.items, // wait, the items returned by create-enquiry don't have rate/gstRate populated in the client yet.
-          bankDetails: 'Please add bank details here.',
           subtotal,
           gstTotal,
           grandTotal: subtotal + gstTotal,
@@ -107,50 +106,85 @@ export function AdminCreateQuoteManager() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Name *</label>
-            <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+            <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Email *</label>
-            <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+            <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Phone</label>
-            <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+            <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">Company</label>
-            <input type="text" value={formData.company} onChange={e => setFormData({...formData, company: e.target.value})} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+            <input type="text" value={formData.company} onChange={e => setFormData({...formData, company: e.target.value})} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-700 mb-1">GST Number</label>
-            <input type="text" value={formData.gstNumber} onChange={e => setFormData({...formData, gstNumber: e.target.value})} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+            <input type="text" value={formData.gstNumber} onChange={e => setFormData({...formData, gstNumber: e.target.value})} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
           </div>
         </div>
 
         <h3 className="font-bold text-gray-900 mt-6 pt-6 border-t border-gray-200">Quote Items</h3>
         <div className="space-y-4">
           {items.map((item, index) => (
-            <div key={index} className="flex gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <div className="flex-1">
+            <div key={index} className="flex flex-wrap gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-200 relative">
+              <div className="flex-1 min-w-[200px] relative group">
                 <label className="block text-xs font-medium text-gray-700 mb-1">Product *</label>
-                <select required value={item.productId} onChange={e => handleItemChange(index, 'productId', e.target.value)} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500">
-                  <option value="">Select Product...</option>
-                  {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                </select>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    placeholder="Search product..."
+                    value={item._search || (products.find(p => p.id === item.productId)?.name || '')}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      handleItemChange(index, '_search', val);
+                      // Clear productId if typing
+                      handleItemChange(index, 'productId', '');
+                    }}
+                    onFocus={() => handleItemChange(index, '_focused', true)}
+                    onBlur={() => setTimeout(() => handleItemChange(index, '_focused', false), 200)}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white"
+                  />
+                  {item._focused && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                      {products
+                        .filter(p => !item._search || p.name.toLowerCase().includes(item._search.toLowerCase()))
+                        .map(p => (
+                          <div
+                            key={p.id}
+                            className="px-3 py-2 text-sm cursor-pointer hover:bg-red-50 hover:text-red-700"
+                            onClick={() => {
+                              handleItemChange(index, 'productId', p.id);
+                              handleItemChange(index, '_search', p.name);
+                              handleItemChange(index, '_focused', false);
+                            }}
+                          >
+                            {p.name}
+                          </div>
+                      ))}
+                      {products.filter(p => !item._search || p.name.toLowerCase().includes(item._search.toLowerCase())).length === 0 && (
+                        <div className="px-3 py-2 text-sm text-gray-500">No products found</div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="w-24">
                 <label className="block text-xs font-medium text-gray-700 mb-1">Qty</label>
-                <input required type="number" min={1} value={item.quantity} onChange={e => handleItemChange(index, 'quantity', parseInt(e.target.value))} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+                <input required type="number" min={1} value={item.quantity} onChange={e => handleItemChange(index, 'quantity', parseInt(e.target.value) || 1)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
               </div>
               <div className="w-32">
                 <label className="block text-xs font-medium text-gray-700 mb-1">Rate (₹)</label>
-                <input type="number" min={0} value={item.rate} onChange={e => handleItemChange(index, 'rate', parseFloat(e.target.value))} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+                <input type="number" min={0} value={item.rate} onChange={e => handleItemChange(index, 'rate', parseFloat(e.target.value) || 0)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
               </div>
               <div className="w-24">
                 <label className="block text-xs font-medium text-gray-700 mb-1">GST (%)</label>
-                <input type="number" min={0} value={item.gstRate} onChange={e => handleItemChange(index, 'gstRate', parseFloat(e.target.value))} className="w-full rounded-lg border-gray-300 text-sm focus:border-red-500 focus:ring-red-500" />
+                <input type="number" min={0} value={item.gstRate} onChange={e => handleItemChange(index, 'gstRate', parseFloat(e.target.value) || 0)} className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-red-500 bg-white" />
               </div>
-              <button type="button" onClick={() => handleRemoveItem(index)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+              <button type="button" onClick={() => handleRemoveItem(index)} className="p-2 mb-0.5 text-red-600 hover:bg-red-50 border border-transparent rounded-lg">
                 <Trash2 className="w-5 h-5" />
               </button>
             </div>

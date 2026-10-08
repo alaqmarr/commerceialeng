@@ -138,6 +138,7 @@ model Enquiry {
   quoteGstTotal   Float?
   quoteGrandTotal Float?
   bankDetails     String?
+  termsAndConditions String?
   quoteSentAt     DateTime?
 
   createdAt   DateTime      @default(now())

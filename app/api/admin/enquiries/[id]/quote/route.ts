@@ -13,7 +13,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }
 
     const body = await req.json();
-    const { isQuote, items, bankDetails, subtotal, gstTotal, grandTotal } = body;
+    const { isQuote, items, bankDetails, termsAndConditions, subtotal, gstTotal, grandTotal } = body;
 
     await prisma.$transaction(async (tx) => {
       await tx.enquiry.update({
@@ -24,6 +24,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
           quoteGstTotal: gstTotal,
           quoteGrandTotal: grandTotal,
           bankDetails,
+          termsAndConditions,
           status: 'QUOTED',
         },
       });

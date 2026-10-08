@@ -133,12 +133,13 @@ model Enquiry {
   status    String        @default("PENDING") // PENDING, CONTACTED, QUOTED, CLOSED
   items     EnquiryItem[]
 
-  isQuote         Boolean   @default(false)
-  quoteSubtotal   Float?
-  quoteGstTotal   Float?
-  quoteGrandTotal Float?
-  bankDetails     String?
-  quoteSentAt     DateTime?
+  isQuote            Boolean   @default(false)
+  quoteSubtotal      Float?
+  quoteGstTotal      Float?
+  quoteGrandTotal    Float?
+  bankDetails        String?
+  termsAndConditions String?
+  quoteSentAt        DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

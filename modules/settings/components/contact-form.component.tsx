@@ -68,14 +68,16 @@ export function ContactFormComponent({ settings, onChange }: ContactFormProps) {
         <div>
           <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
             <Mail className="w-3 h-3 text-red-600" />
-            <span>Sales & Quotation Email</span>
+            <span>Sales & Quotation Emails</span>
           </label>
           <input
-            type="email"
+            type="text"
             value={settings.SALES_EMAIL || ""}
             onChange={(e) => onChange("SALES_EMAIL", e.target.value)}
+            placeholder="e.g. sales@abc.com, manager@abc.com"
             className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 text-xs focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600"
           />
+          <p className="text-[10px] text-gray-500 mt-1">Separate multiple emails with commas</p>
         </div>
       </div>
 
@@ -101,6 +103,62 @@ export function ContactFormComponent({ settings, onChange }: ContactFormProps) {
           onChange={(e) => onChange("BUSINESS_HOURS", e.target.value)}
           className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 text-xs focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600"
         />
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+          Department-wise Contacts (Optional)
+        </label>
+        <textarea
+          rows={3}
+          value={settings.DEPARTMENT_CONTACTS || ""}
+          onChange={(e) => onChange("DEPARTMENT_CONTACTS", e.target.value)}
+          placeholder="e.g. Sales: +91 98765 43210, Tech Support: +91 98765 43211"
+          className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 text-xs focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none"
+        />
+        <p className="text-[10px] text-gray-500 mt-1">List any department specific numbers here (Call/WhatsApp). These will be displayed on the contact page.</p>
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+          Bank Account Details
+        </label>
+        <textarea
+          rows={3}
+          value={settings.BANK_DETAILS || ""}
+          onChange={(e) => onChange("BANK_DETAILS", e.target.value)}
+          placeholder="e.g. Bank Name: HDFC\nAccount No: 123456789\nIFSC: HDFC000123"
+          className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 text-xs focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none"
+        />
+        <p className="text-[10px] text-gray-500 mt-1">These will be pre-filled automatically on new quotations.</p>
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+          Default Terms and Conditions
+        </label>
+        <textarea
+          rows={3}
+          value={settings.DEFAULT_TERMS || ""}
+          onChange={(e) => onChange("DEFAULT_TERMS", e.target.value)}
+          placeholder="e.g. 1. Delivery within 15 days.\n2. Payment 100% advance."
+          className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 text-xs focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none"
+        />
+        <p className="text-[10px] text-gray-500 mt-1">Default T&Cs inserted into every new quote (can be edited per quote).</p>
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+          Google Maps Embed Code / Link
+        </label>
+        <textarea
+          rows={3}
+          value={settings.MAP_LOCATION || ""}
+          onChange={(e) => onChange("MAP_LOCATION", e.target.value)}
+          placeholder="e.g. <iframe src='...'></iframe>"
+          className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 text-xs focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-none"
+        />
+        <p className="text-[10px] text-gray-500 mt-1">Paste the Google Maps iframe snippet to display a map on the contact page.</p>
       </div>
     </div>
   );

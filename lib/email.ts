@@ -115,6 +115,12 @@ export async function sendEnquiryNotificationEmail(enquiry: EmailEnquiryPayload)
           </h3>
           ${itemsTableHtml}
 
+          <div style="margin-top: 24px; text-align: center;">
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/admin/enquiries/${enquiry.id}" style="display: inline-block; padding: 12px 24px; background-color: #f59e0b; color: #090d16; text-decoration: none; font-weight: bold; border-radius: 4px; font-family: sans-serif;">
+              View / Manage Enquiry in Admin Panel
+            </a>
+          </div>
+
           <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #334155; font-size: 12px; color: #64748b;">
             This is an automated dispatch from the Commercial Engineering Associates B2B platform.
           </div>
@@ -179,4 +185,67 @@ ${enquiry.items.map((i, idx) => `${idx + 1}. ${i.product.name} (Qty: ${i.quantit
     // Non-blocking: never fail the user's enquiry submission if external SMTP fails
     return { success: true, fallback: true };
   }
+}
+
+
+export async function sendCustomerThankYouEmail(enquiry: EmailEnquiryPayload): Promise<void> {
+  try {
+    const settings = await prisma.setting.findMany({
+      where: { key: { in: ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM', 'SALES_EMAIL'] } }
+    });
+    const settingsMap = settings.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
+    const smtpHost = settingsMap['SMTP_HOST'] || process.env.SMTP_HOST;
+    const smtpUser = settingsMap['SMTP_USER'] || process.env.SMTP_USER;
+    const smtpPass = settingsMap['SMTP_PASS'] || process.env.SMTP_PASS;
+    const smtpFrom = settingsMap['SMTP_FROM'] || process.env.SMTP_FROM || 'Commercial Engineering Associates <sales@commercialeng.com>';
+    if (!smtpHost || !smtpUser || !smtpPass || smtpPass === 'placeholder' || smtpPass === 'app_password_placeholder') return;
+
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: Number(settingsMap['SMTP_PORT'] || process.env.SMTP_PORT || 587),
+      secure: Number(settingsMap['SMTP_PORT']) === 465,
+      auth: { user: smtpUser, pass: smtpPass },
+    });
+
+    const htmlContent = `
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <div style="background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); color: #ffffff; padding: 24px; text-align: center;">
+          <h1 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px;">Commercial Engineering Associates</h1>
+          <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;">Industrial Tapes, Sealants & Adhesives</p>
+        </div>
+        <div style="padding: 32px 24px;">
+          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">Thank You for Your Enquiry!</h2>
+          <p style="font-size: 15px; line-height: 1.6; color: #475569;">
+            Dear ${enquiry.name},<br/><br/>
+            We have successfully received your request for quotation (Enquiry Reference: <strong>#${enquiry.id.slice(-6).toUpperCase()}</strong>).
+          </p>
+          <p style="font-size: 15px; line-height: 1.6; color: #475569;">
+            Our technical sales team is currently reviewing your requirements. We aim to respond within 24 hours with product recommendations, datasheets, or a formal commercial quotation.
+          </p>
+          <div style="margin-top: 32px; padding: 16px; background-color: #f8fafc; border-left: 4px solid #b91c1c; border-radius: 0 4px 4px 0;">
+            <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #334155; text-transform: uppercase;">What happens next?</h3>
+            <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.6;">
+              <li>A technical specialist will be assigned to your case.</li>
+              <li>You may receive a call for any clarifications.</li>
+              <li>A formal quotation will be sent to this email address.</li>
+            </ul>
+          </div>
+        </div>
+        <div style="background-color: #f1f5f9; padding: 24px; text-align: center; border-top: 1px solid #e2e8f0;">
+          <p style="margin: 0; font-size: 13px; color: #64748b;">
+            Need immediate assistance? Reply to this email or call us directly.<br/>
+            <strong>Commercial Engineering Associates</strong>
+          </p>
+        </div>
+      </div>
+    `;
+
+    await transporter.sendMail({
+      from: smtpFrom,
+      to: enquiry.email,
+      subject: `Enquiry Received - Commercial Engineering Associates (#${enquiry.id.slice(-6).toUpperCase()})`,
+      html: htmlContent,
+    });
+    console.log(`[Dynamic SMTP] Sent thank you email to ${enquiry.email}`);
+  } catch(e) { console.error('Failed to send thank you email:', e); }
 }

@@ -4,7 +4,7 @@ import {
   sanitizeEnquiryItems,
   createEnquiryQuery,
 } from '@/modules/enquiries';
-import { sendEnquiryNotificationEmail } from '@/lib/email';
+import { sendEnquiryNotificationEmail, sendCustomerThankYouEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     // Trigger dynamic SMTP email notification asynchronously
     try {
-      await sendEnquiryNotificationEmail({
+      const payload = {
         id: newEnquiry.id,
         name: newEnquiry.name,
         email: newEnquiry.email,
@@ -44,7 +44,9 @@ export async function POST(req: NextRequest) {
             slug: i.product?.slug || '',
           },
         })),
-      });
+      };
+      await sendEnquiryNotificationEmail(payload);
+      await sendCustomerThankYouEmail(payload);
     } catch (emailErr) {
       console.warn('[Enquiries API] Non-blocking email dispatch notice:', emailErr);
     }

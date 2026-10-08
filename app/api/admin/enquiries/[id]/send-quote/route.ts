@@ -38,60 +38,76 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       secure: Number(config.SMTP_PORT) === 465,
     });
 
+    
     let html = `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <h2 style="color: #dc2626;">Quotation from Commercial Engineering Associates</h2>
-        <p>Dear ${enquiry.name},</p>
-        <p>Thank you for your enquiry. Please find our commercial quotation below:</p>
-        
-        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-          <thead>
-            <tr style="background: #f3f4f6; border-bottom: 2px solid #e5e7eb;">
-              <th style="padding: 10px; text-align: left;">Item</th>
-              <th style="padding: 10px; text-align: right;">Qty</th>
-              <th style="padding: 10px; text-align: right;">Rate (₹)</th>
-              <th style="padding: 10px; text-align: right;">GST (%)</th>
-              <th style="padding: 10px; text-align: right;">Total (₹)</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 650px; margin: 0 auto; background-color: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 24px; text-align: center; border-bottom: 4px solid #b91c1c;">
+          <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 0.5px;">Commercial Engineering Associates</h1>
+          <p style="margin: 8px 0 0 0; font-size: 14px; color: #94a3b8;">Industrial Quotation / Commercial Offer</p>
+        </div>
+        <div style="padding: 32px 24px;">
+          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">Official Quotation</h2>
+          <p style="font-size: 15px; line-height: 1.6; color: #475569;">Dear ${enquiry.name},</p>
+          <p style="font-size: 15px; line-height: 1.6; color: #475569;">Thank you for your interest in our products. Please find our commercial quotation below based on your requirements:</p>
+          
+          <table style="width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px;">
+            <thead>
+              <tr style="background-color: #f1f5f9; color: #475569; text-align: left;">
+                <th style="padding: 12px; border-bottom: 2px solid #cbd5e1; border-top-left-radius: 4px;">Item Description</th>
+                <th style="padding: 12px; border-bottom: 2px solid #cbd5e1; text-align: right;">Qty</th>
+                <th style="padding: 12px; border-bottom: 2px solid #cbd5e1; text-align: right;">Rate (INR)</th>
+                <th style="padding: 12px; border-bottom: 2px solid #cbd5e1; text-align: right;">GST (%)</th>
+                <th style="padding: 12px; border-bottom: 2px solid #cbd5e1; text-align: right; border-top-right-radius: 4px;">Total (INR)</th>
+              </tr>
+            </thead>
+            <tbody>
     `;
 
     enquiry.items.forEach(item => {
       const lineTotal = ((item.rate || 0) * item.quantity) * (1 + (item.gstRate || 0) / 100);
       html += `
-        <tr style="border-bottom: 1px solid #e5e7eb;">
-          <td style="padding: 10px;">${item.product?.name || 'Product'}</td>
-          <td style="padding: 10px; text-align: right;">${item.quantity}</td>
-          <td style="padding: 10px; text-align: right;">${item.rate?.toFixed(2) || '0.00'}</td>
-          <td style="padding: 10px; text-align: right;">${item.gstRate?.toFixed(2) || '0.00'}</td>
-          <td style="padding: 10px; text-align: right; font-weight: bold;">${lineTotal.toFixed(2)}</td>
+        <tr>
+          <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 500;">${item.product?.name || 'Product'}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: right; color: #475569;">${item.quantity}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: right; color: #475569;">${item.rate?.toFixed(2) || '0.00'}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: right; color: #475569;">${item.gstRate?.toFixed(2) || '0.00'}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: right; color: #0f172a; font-weight: 600;">${lineTotal.toFixed(2)}</td>
         </tr>
       `;
     });
 
     html += `
-          </tbody>
-        </table>
+            </tbody>
+          </table>
 
-        <div style="text-align: right; margin-bottom: 20px;">
-          <p><strong>Subtotal:</strong> ₹${(enquiry.quoteSubtotal || 0).toFixed(2)}</p>
-          <p><strong>GST Total:</strong> ₹${(enquiry.quoteGstTotal || 0).toFixed(2)}</p>
-          <h3 style="color: #dc2626;">Grand Total: ₹${(enquiry.quoteGrandTotal || 0).toFixed(2)}</h3>
+          <div style="text-align: right; margin-bottom: 24px; padding-right: 12px;">
+            <p style="margin: 4px 0; color: #475569;"><strong>Subtotal:</strong> INR ${(enquiry.quoteSubtotal || 0).toFixed(2)}</p>
+            <p style="margin: 4px 0; color: #475569;"><strong>GST Total:</strong> INR ${(enquiry.quoteGstTotal || 0).toFixed(2)}</p>
+            <h3 style="margin: 12px 0 0 0; color: #b91c1c; font-size: 20px;">Grand Total: INR ${(enquiry.quoteGrandTotal || 0).toFixed(2)}</h3>
+          </div>
+
+          ${enquiry.bankDetails ? `
+          <div style="background-color: #f8fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0; margin-top: 24px;">
+            <h4 style="margin: 0 0 12px 0; color: #0f172a; font-size: 15px; display: flex; align-items: center;">Bank Account Details for Payment</h4>
+            <pre style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; color: #475569; font-size: 14px; white-space: pre-wrap; line-height: 1.6;">${enquiry.bankDetails}</pre>
+          </div>
+          ` : ''}
+          ${enquiry.termsAndConditions ? `
+          <div style="background-color: #fffbeb; padding: 20px; border-radius: 6px; border: 1px solid #fcd34d; margin-top: 24px;">
+            <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 15px; display: flex; align-items: center;">Terms & Conditions</h4>
+            <pre style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; color: #92400e; font-size: 14px; white-space: pre-wrap; line-height: 1.6;">${enquiry.termsAndConditions}</pre>
+          </div>
+          ` : ''}
         </div>
-
-        ${enquiry.bankDetails ? `
-        <div style="background: #f9fafb; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb;">
-          <h4 style="margin-top: 0;">Bank Details for Payment</h4>
-          <pre style="font-family: inherit; margin: 0; white-space: pre-wrap;">${enquiry.bankDetails}</pre>
+        <div style="background-color: #f1f5f9; padding: 24px; text-align: center; border-top: 1px solid #e2e8f0;">
+          <p style="margin: 0; font-size: 13px; color: #64748b;">
+            This quotation is generated electronically.<br/>For any clarifications, please reply directly to this email.<br/>
+            <strong>Commercial Engineering Associates</strong>
+          </p>
         </div>
-        ` : ''}
-
-        <p style="margin-top: 30px; font-size: 12px; color: #6b7280;">
-          This is an automatically generated quotation. For any queries, please reply to this email.
-        </p>
       </div>
     `;
+
 
     await transporter.sendMail({
       from: config.SALES_EMAIL || config.SMTP_USER,

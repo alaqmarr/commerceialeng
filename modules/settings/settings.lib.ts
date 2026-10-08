@@ -76,6 +76,10 @@ export function formatContactSettings(
     businessHours,
     cleanWhatsapp: cleanWhatsappNumber(whatsapp),
     cleanPhone: cleanPhoneNumber(phone),
+    departmentContacts: settingsMap["DEPARTMENT_CONTACTS"] || "",
+    bankDetails: settingsMap["BANK_DETAILS"] || "",
+    mapLocation: settingsMap["MAP_LOCATION"] || "",
+    defaultTerms: settingsMap["DEFAULT_TERMS"] || "",
   };
 }
 

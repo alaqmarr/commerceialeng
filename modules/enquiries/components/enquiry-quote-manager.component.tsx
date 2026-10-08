@@ -9,16 +9,18 @@ import Link from 'next/link';
 
 interface EnquiryQuoteManagerProps {
   initialEnquiry: EnquiryDTO;
+  defaultSettings?: { bankDetails?: string; termsAndConditions?: string; };
 }
 
-export function EnquiryQuoteManager({ initialEnquiry }: EnquiryQuoteManagerProps) {
+export function EnquiryQuoteManager({ initialEnquiry, defaultSettings }: EnquiryQuoteManagerProps) {
   const [enquiry, setEnquiry] = useState<EnquiryDTO>(initialEnquiry);
   const [isQuoteMode, setIsQuoteMode] = useState(initialEnquiry.isQuote || false);
   const [saving, setSaving] = useState(false);
   const [sending, setSending] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [items, setItems] = useState<EnquiryItemDTO[]>(initialEnquiry.items);
-  const [bankDetails, setBankDetails] = useState(initialEnquiry.bankDetails || '');
+  const [bankDetails, setBankDetails] = useState(initialEnquiry.bankDetails || defaultSettings?.bankDetails || '');
+  const [termsAndConditions, setTermsAndConditions] = useState(initialEnquiry.termsAndConditions || defaultSettings?.termsAndConditions || '');
 
   const calculations = useMemo(() => {
     let subtotal = 0;
@@ -56,6 +58,7 @@ export function EnquiryQuoteManager({ initialEnquiry }: EnquiryQuoteManagerProps
           isQuote: true,
           items,
           bankDetails,
+          termsAndConditions,
           ...calculations,
         }),
       });
@@ -156,7 +159,7 @@ export function EnquiryQuoteManager({ initialEnquiry }: EnquiryQuoteManagerProps
                           type="number"
                           value={item.rate || ''}
                           onChange={(e) => handleItemChange(index, 'rate', parseFloat(e.target.value))}
-                          className="w-full text-sm border-gray-300 rounded-lg focus:border-red-500 focus:ring-red-500"
+                          className="w-full text-sm border border-gray-300 px-3 py-2 bg-white rounded-lg focus:border-red-500 focus:ring-red-500"
                         />
                       </div>
                       <div>
@@ -165,7 +168,7 @@ export function EnquiryQuoteManager({ initialEnquiry }: EnquiryQuoteManagerProps
                           type="number"
                           value={item.gstRate || ''}
                           onChange={(e) => handleItemChange(index, 'gstRate', parseFloat(e.target.value))}
-                          className="w-full text-sm border-gray-300 rounded-lg focus:border-red-500 focus:ring-red-500"
+                          className="w-full text-sm border border-gray-300 px-3 py-2 bg-white rounded-lg focus:border-red-500 focus:ring-red-500"
                         />
                       </div>
                       <div className="col-span-2 text-right pt-5">
@@ -188,15 +191,27 @@ export function EnquiryQuoteManager({ initialEnquiry }: EnquiryQuoteManagerProps
                   <div className="text-base font-bold text-gray-900 mt-2">Grand Total: <span className="text-red-600 w-32 inline-block text-right">₹{calculations.grandTotal.toFixed(2)}</span></div>
                 </div>
 
-                <div className="mt-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Bank Account Details (Printed on Quote)</label>
-                  <textarea
-                    rows={4}
-                    value={bankDetails}
-                    onChange={(e) => setBankDetails(e.target.value)}
-                    className="w-full border-gray-300 rounded-lg text-sm focus:border-red-500 focus:ring-red-500"
-                    placeholder="Bank Name: HDFC Bank\nA/C No: 123456789\nIFSC: HDFC000123"
-                  />
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Bank Account Details</label>
+                    <textarea
+                      rows={4}
+                      value={bankDetails}
+                      onChange={(e) => setBankDetails(e.target.value)}
+                      className="w-full border border-gray-300 px-3 py-2 bg-white rounded-lg text-sm focus:border-red-500 focus:ring-red-500"
+                      placeholder="Bank Name: HDFC Bank\nA/C No: 123456789\nIFSC: HDFC000123"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Terms & Conditions</label>
+                    <textarea
+                      rows={4}
+                      value={termsAndConditions}
+                      onChange={(e) => setTermsAndConditions(e.target.value)}
+                      className="w-full border border-gray-300 px-3 py-2 bg-white rounded-lg text-sm focus:border-red-500 focus:ring-red-500"
+                      placeholder="1. Delivery in 15 days.\n2. Advanced payment 100%."
+                    />
+                  </div>
                 </div>
 
                 <div className="mt-6 flex justify-end gap-3">

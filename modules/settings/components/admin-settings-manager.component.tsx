@@ -36,6 +36,9 @@ export function AdminSettingsManager() {
     SMTP_USER: "",
     SMTP_PASS: "",
     SMTP_FROM: "Commercial Engineering Associates <sales@commercialeng.com>",
+    BANK_DETAILS: "",
+    MAP_LOCATION: "",
+    DEFAULT_TERMS: "",
   });
 
   const fetchSettings = useCallback(async () => {

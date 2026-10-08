@@ -23,6 +23,10 @@ export interface ContactSettingsDTO {
   businessHours: string;
   cleanWhatsapp: string;
   cleanPhone: string;
+  departmentContacts?: string;
+  bankDetails?: string;
+  mapLocation?: string;
+  defaultTerms?: string;
 }
 
 export interface SMTPSettingsDTO {
