@@ -1,0 +1,165 @@
+import React from "react";
+import Link from "next/link";
+import {
+  Package,
+  FolderTree,
+  Layers,
+  Image as ImageIcon,
+  Settings,
+  Mail,
+  PlusCircle,
+  ArrowRight,
+} from "lucide-react";
+import type { AdminOverviewMetrics } from "../analytics.types";
+import { AdminRecentEnquiries } from "./admin-recent-enquiries.component";
+
+export interface AdminOverviewDashboardProps {
+  data: AdminOverviewMetrics;
+}
+
+export function AdminOverviewDashboard({ data }: AdminOverviewDashboardProps) {
+  const {
+    totalProducts,
+    totalCategories,
+    totalUseCases,
+    totalHeroSlides,
+    totalEnquiries,
+    pendingEnquiries,
+    recentEnquiries,
+  } = data;
+
+  const cards = [
+    {
+      title: "Products",
+      count: totalProducts,
+      href: "/admin/products",
+      icon: Package,
+      desc: "Manage catalog products & specs",
+    },
+    {
+      title: "Categories",
+      count: totalCategories,
+      href: "/admin/categories",
+      icon: FolderTree,
+      desc: "Product classifications",
+    },
+    {
+      title: "Use Cases",
+      count: totalUseCases,
+      href: "/admin/use-cases",
+      icon: Layers,
+      desc: "Industrial applications",
+    },
+    {
+      title: "Hero Slides",
+      count: totalHeroSlides,
+      href: "/admin/hero",
+      icon: ImageIcon,
+      desc: "Homepage carousel slides",
+    },
+    {
+      title: "Enquiries",
+      count: totalEnquiries,
+      badge: pendingEnquiries > 0 ? `${pendingEnquiries} Pending` : undefined,
+      href: "/admin/enquiries",
+      icon: Mail,
+      desc: "Incoming customer RFQs",
+    },
+    {
+      title: "Settings",
+      count: "Active",
+      href: "/admin/settings",
+      icon: Settings,
+      desc: "Company & SMTP configuration",
+    },
+  ];
+
+  return (
+    <div className="space-y-8">
+      {/* Page Title & Status */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-5">
+        <div>
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 bg-red-50 border border-red-200 rounded text-[11px] font-semibold text-red-600 mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+            OPERATIONAL
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-gray-900">
+            System Overview & Metrics
+          </h1>
+          <p className="text-xs text-gray-500 mt-1">
+            Commercial Engineering Associates — Production Management Console
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/products"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition-colors shadow-sm"
+          >
+            <PlusCircle className="w-3.5 h-3.5" />
+            <span>Add Product</span>
+          </Link>
+          <Link
+            href="/admin/enquiries"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-200 rounded-lg text-xs font-semibold transition-colors"
+          >
+            <Mail className="w-3.5 h-3.5 text-red-600" />
+            <span>View Inbox ({pendingEnquiries})</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Metric Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {cards.map((c) => {
+          const Icon = c.icon;
+          return (
+            <div
+              key={c.href}
+              className="rounded-xl border border-gray-200 bg-white p-5 hover:border-red-500/30 hover:shadow-md transition-all flex flex-col justify-between shadow-sm"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2.5 rounded-lg bg-red-50 text-red-600 border border-red-200">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  {c.badge && (
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-red-50 text-red-600 border border-red-200">
+                      {c.badge}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="text-3xl font-extrabold text-gray-900">
+                    {c.count}
+                  </span>
+                  <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                    {c.title}
+                  </h2>
+                </div>
+                <p className="text-xs text-gray-500">{c.desc}</p>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                <Link
+                  href={c.href}
+                  className="inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-700 font-semibold"
+                >
+                  <span>Manage {c.title}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Recent Enquiries Inbox Summary */}
+      <AdminRecentEnquiries
+        recentEnquiries={recentEnquiries}
+        totalEnquiries={totalEnquiries}
+      />
+    </div>
+  );
+}

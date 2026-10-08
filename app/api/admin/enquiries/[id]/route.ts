@@ -1,6 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import {
+  getEnquiryByIdQuery,
+  updateEnquiryStatusQuery,
+  deleteEnquiryQuery,
+} from '@/modules/enquiries';
 
 export async function GET(
   req: NextRequest,
@@ -9,37 +13,26 @@ export async function GET(
   try {
     const token = await getToken({
       req,
-      secret: process.env.NEXTAUTH_SECRET || "commercial-engineering-associates-dev-secret-key-32chars-min",
+      secret:
+        process.env.NEXTAUTH_SECRET ||
+        'commercial-engineering-associates-dev-secret-key-32chars-min',
     });
 
     if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id } = await params;
-
-    const enquiry = await prisma.enquiry.findUnique({
-      where: { id },
-      include: {
-        items: {
-          include: {
-            product: true,
-          },
-        },
-      },
-    });
+    const enquiry = await getEnquiryByIdQuery(id);
 
     if (!enquiry) {
-      return NextResponse.json(
-        { error: "Enquiry not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Enquiry not found' }, { status: 404 });
     }
 
     return NextResponse.json(enquiry);
   } catch (error: unknown) {
-    console.error("[Enquiry GET [id] Error]:", error);
-    const msg = error instanceof Error ? error.message : "Failed to fetch enquiry";
+    console.error('[Enquiry GET [id] Error]:', error);
+    const msg = error instanceof Error ? error.message : 'Failed to fetch enquiry';
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
@@ -51,47 +44,34 @@ export async function PATCH(
   try {
     const token = await getToken({
       req,
-      secret: process.env.NEXTAUTH_SECRET || "commercial-engineering-associates-dev-secret-key-32chars-min",
+      secret:
+        process.env.NEXTAUTH_SECRET ||
+        'commercial-engineering-associates-dev-secret-key-32chars-min',
     });
 
     if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id } = await params;
     const body = await req.json();
     const { status, message } = body;
 
-    const existing = await prisma.enquiry.findUnique({
-      where: { id },
-    });
-
+    const existing = await getEnquiryByIdQuery(id);
     if (!existing) {
-      return NextResponse.json(
-        { error: "Enquiry not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Enquiry not found' }, { status: 404 });
     }
 
-    const updated = await prisma.enquiry.update({
-      where: { id },
-      data: {
-        ...(status && { status: status.toUpperCase() }),
-        ...(message !== undefined && { message }),
-      },
-      include: {
-        items: {
-          include: {
-            product: true,
-          },
-        },
-      },
+    const updated = await updateEnquiryStatusQuery({
+      id,
+      status,
+      message,
     });
 
     return NextResponse.json(updated);
   } catch (error: unknown) {
-    console.error("[Enquiry PATCH [id] Error]:", error);
-    const msg = error instanceof Error ? error.message : "Failed to update enquiry";
+    console.error('[Enquiry PATCH [id] Error]:', error);
+    const msg = error instanceof Error ? error.message : 'Failed to update enquiry';
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
@@ -103,34 +83,26 @@ export async function DELETE(
   try {
     const token = await getToken({
       req,
-      secret: process.env.NEXTAUTH_SECRET || "commercial-engineering-associates-dev-secret-key-32chars-min",
+      secret:
+        process.env.NEXTAUTH_SECRET ||
+        'commercial-engineering-associates-dev-secret-key-32chars-min',
     });
 
     if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id } = await params;
-
-    const existing = await prisma.enquiry.findUnique({
-      where: { id },
-    });
-
+    const existing = await getEnquiryByIdQuery(id);
     if (!existing) {
-      return NextResponse.json(
-        { error: "Enquiry not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Enquiry not found' }, { status: 404 });
     }
 
-    await prisma.enquiry.delete({
-      where: { id },
-    });
-
-    return NextResponse.json({ success: true, message: "Enquiry deleted" });
+    await deleteEnquiryQuery(id);
+    return NextResponse.json({ success: true, message: 'Enquiry deleted' });
   } catch (error: unknown) {
-    console.error("[Enquiry DELETE [id] Error]:", error);
-    const msg = error instanceof Error ? error.message : "Failed to delete enquiry";
+    console.error('[Enquiry DELETE [id] Error]:', error);
+    const msg = error instanceof Error ? error.message : 'Failed to delete enquiry';
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

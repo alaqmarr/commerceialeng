@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { countAdminsQuery } from "@/modules/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const adminCount = await prisma.adminUser.count();
-    const isSetup = adminCount > 0;
-
+    const adminCount = await countAdminsQuery();
     return NextResponse.json({
-      isSetup,
+      isSetup: adminCount > 0,
       adminCount,
       timestamp: new Date().toISOString(),
     });

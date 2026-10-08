@@ -1,18 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import prisma from "@/lib/prisma";
+import { getAllSettingsQuery, upsertSettingsQuery } from "@/modules/settings";
 
 export async function GET() {
   try {
-    const settingsList = await prisma.setting.findMany();
-    const settingsMap: Record<string, string> = {};
-
-    settingsList.forEach((s) => {
-      settingsMap[s.key] = s.value;
-    });
-
+    const { settings, settingsMap } = await getAllSettingsQuery();
     return NextResponse.json({
-      settings: settingsList,
+      settings,
       settingsMap,
     });
   } catch (error: unknown) {
@@ -34,51 +28,12 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-
-    // Check if bulk update or single key-value
-    if (body.settings && typeof body.settings === "object") {
-      const entries = Object.entries(body.settings);
-      for (const [key, val] of entries) {
-        if (typeof val === "string") {
-          await prisma.setting.upsert({
-            where: { key },
-            update: { value: val },
-            create: { key, value: val },
-          });
-        }
-      }
-    } else if (body.key && typeof body.key === "string") {
-      const val = body.value !== undefined ? String(body.value) : "";
-      await prisma.setting.upsert({
-        where: { key: body.key },
-        update: {
-          value: val,
-          description: body.description || undefined,
-        },
-        create: {
-          key: body.key,
-          value: val,
-          description: body.description || null,
-        },
-      });
-    } else {
-      return NextResponse.json(
-        { error: "Invalid payload format. Expected { settings: {...} } or { key, value }" },
-        { status: 400 }
-      );
-    }
-
-    // Return refreshed settings
-    const updatedList = await prisma.setting.findMany();
-    const updatedMap: Record<string, string> = {};
-    updatedList.forEach((s) => {
-      updatedMap[s.key] = s.value;
-    });
+    const { settings, settingsMap } = await upsertSettingsQuery(body);
 
     return NextResponse.json({
       success: true,
-      settings: updatedList,
-      settingsMap: updatedMap,
+      settings,
+      settingsMap,
     });
   } catch (error: unknown) {
     console.error("[Settings POST Error]:", error);

@@ -9265,8 +9265,22 @@ export namespace Prisma {
 
   export type AggregateEnquiry = {
     _count: EnquiryCountAggregateOutputType | null
+    _avg: EnquiryAvgAggregateOutputType | null
+    _sum: EnquirySumAggregateOutputType | null
     _min: EnquiryMinAggregateOutputType | null
     _max: EnquiryMaxAggregateOutputType | null
+  }
+
+  export type EnquiryAvgAggregateOutputType = {
+    quoteSubtotal: number | null
+    quoteGstTotal: number | null
+    quoteGrandTotal: number | null
+  }
+
+  export type EnquirySumAggregateOutputType = {
+    quoteSubtotal: number | null
+    quoteGstTotal: number | null
+    quoteGrandTotal: number | null
   }
 
   export type EnquiryMinAggregateOutputType = {
@@ -9275,8 +9289,15 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     company: string | null
+    gstNumber: string | null
     message: string | null
     status: string | null
+    isQuote: boolean | null
+    quoteSubtotal: number | null
+    quoteGstTotal: number | null
+    quoteGrandTotal: number | null
+    bankDetails: string | null
+    quoteSentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9287,8 +9308,15 @@ export namespace Prisma {
     email: string | null
     phone: string | null
     company: string | null
+    gstNumber: string | null
     message: string | null
     status: string | null
+    isQuote: boolean | null
+    quoteSubtotal: number | null
+    quoteGstTotal: number | null
+    quoteGrandTotal: number | null
+    bankDetails: string | null
+    quoteSentAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9299,13 +9327,32 @@ export namespace Prisma {
     email: number
     phone: number
     company: number
+    gstNumber: number
     message: number
     status: number
+    isQuote: number
+    quoteSubtotal: number
+    quoteGstTotal: number
+    quoteGrandTotal: number
+    bankDetails: number
+    quoteSentAt: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type EnquiryAvgAggregateInputType = {
+    quoteSubtotal?: true
+    quoteGstTotal?: true
+    quoteGrandTotal?: true
+  }
+
+  export type EnquirySumAggregateInputType = {
+    quoteSubtotal?: true
+    quoteGstTotal?: true
+    quoteGrandTotal?: true
+  }
 
   export type EnquiryMinAggregateInputType = {
     id?: true
@@ -9313,8 +9360,15 @@ export namespace Prisma {
     email?: true
     phone?: true
     company?: true
+    gstNumber?: true
     message?: true
     status?: true
+    isQuote?: true
+    quoteSubtotal?: true
+    quoteGstTotal?: true
+    quoteGrandTotal?: true
+    bankDetails?: true
+    quoteSentAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9325,8 +9379,15 @@ export namespace Prisma {
     email?: true
     phone?: true
     company?: true
+    gstNumber?: true
     message?: true
     status?: true
+    isQuote?: true
+    quoteSubtotal?: true
+    quoteGstTotal?: true
+    quoteGrandTotal?: true
+    bankDetails?: true
+    quoteSentAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9337,8 +9398,15 @@ export namespace Prisma {
     email?: true
     phone?: true
     company?: true
+    gstNumber?: true
     message?: true
     status?: true
+    isQuote?: true
+    quoteSubtotal?: true
+    quoteGstTotal?: true
+    quoteGrandTotal?: true
+    bankDetails?: true
+    quoteSentAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9382,6 +9450,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: EnquiryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EnquirySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: EnquiryMinAggregateInputType
@@ -9412,6 +9492,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: EnquiryCountAggregateInputType | true
+    _avg?: EnquiryAvgAggregateInputType
+    _sum?: EnquirySumAggregateInputType
     _min?: EnquiryMinAggregateInputType
     _max?: EnquiryMaxAggregateInputType
   }
@@ -9422,11 +9504,20 @@ export namespace Prisma {
     email: string
     phone: string | null
     company: string | null
+    gstNumber: string | null
     message: string | null
     status: string
+    isQuote: boolean
+    quoteSubtotal: number | null
+    quoteGstTotal: number | null
+    quoteGrandTotal: number | null
+    bankDetails: string | null
+    quoteSentAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: EnquiryCountAggregateOutputType | null
+    _avg: EnquiryAvgAggregateOutputType | null
+    _sum: EnquirySumAggregateOutputType | null
     _min: EnquiryMinAggregateOutputType | null
     _max: EnquiryMaxAggregateOutputType | null
   }
@@ -9451,8 +9542,15 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     company?: boolean
+    gstNumber?: boolean
     message?: boolean
     status?: boolean
+    isQuote?: boolean
+    quoteSubtotal?: boolean
+    quoteGstTotal?: boolean
+    quoteGrandTotal?: boolean
+    bankDetails?: boolean
+    quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     items?: boolean | Enquiry$itemsArgs<ExtArgs>
@@ -9465,8 +9563,15 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     company?: boolean
+    gstNumber?: boolean
     message?: boolean
     status?: boolean
+    isQuote?: boolean
+    quoteSubtotal?: boolean
+    quoteGstTotal?: boolean
+    quoteGrandTotal?: boolean
+    bankDetails?: boolean
+    quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["enquiry"]>
@@ -9477,8 +9582,15 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     company?: boolean
+    gstNumber?: boolean
     message?: boolean
     status?: boolean
+    isQuote?: boolean
+    quoteSubtotal?: boolean
+    quoteGstTotal?: boolean
+    quoteGrandTotal?: boolean
+    bankDetails?: boolean
+    quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["enquiry"]>
@@ -9489,13 +9601,20 @@ export namespace Prisma {
     email?: boolean
     phone?: boolean
     company?: boolean
+    gstNumber?: boolean
     message?: boolean
     status?: boolean
+    isQuote?: boolean
+    quoteSubtotal?: boolean
+    quoteGstTotal?: boolean
+    quoteGrandTotal?: boolean
+    bankDetails?: boolean
+    quoteSentAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EnquiryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "company" | "message" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["enquiry"]>
+  export type EnquiryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "company" | "gstNumber" | "message" | "status" | "isQuote" | "quoteSubtotal" | "quoteGstTotal" | "quoteGrandTotal" | "bankDetails" | "quoteSentAt" | "createdAt" | "updatedAt", ExtArgs["result"]["enquiry"]>
   export type EnquiryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Enquiry$itemsArgs<ExtArgs>
     _count?: boolean | EnquiryCountOutputTypeDefaultArgs<ExtArgs>
@@ -9514,8 +9633,15 @@ export namespace Prisma {
       email: string
       phone: string | null
       company: string | null
+      gstNumber: string | null
       message: string | null
       status: string
+      isQuote: boolean
+      quoteSubtotal: number | null
+      quoteGstTotal: number | null
+      quoteGrandTotal: number | null
+      bankDetails: string | null
+      quoteSentAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["enquiry"]>
@@ -9947,8 +10073,15 @@ export namespace Prisma {
     readonly email: FieldRef<"Enquiry", 'String'>
     readonly phone: FieldRef<"Enquiry", 'String'>
     readonly company: FieldRef<"Enquiry", 'String'>
+    readonly gstNumber: FieldRef<"Enquiry", 'String'>
     readonly message: FieldRef<"Enquiry", 'String'>
     readonly status: FieldRef<"Enquiry", 'String'>
+    readonly isQuote: FieldRef<"Enquiry", 'Boolean'>
+    readonly quoteSubtotal: FieldRef<"Enquiry", 'Float'>
+    readonly quoteGstTotal: FieldRef<"Enquiry", 'Float'>
+    readonly quoteGrandTotal: FieldRef<"Enquiry", 'Float'>
+    readonly bankDetails: FieldRef<"Enquiry", 'String'>
+    readonly quoteSentAt: FieldRef<"Enquiry", 'DateTime'>
     readonly createdAt: FieldRef<"Enquiry", 'DateTime'>
     readonly updatedAt: FieldRef<"Enquiry", 'DateTime'>
   }
@@ -10398,10 +10531,14 @@ export namespace Prisma {
 
   export type EnquiryItemAvgAggregateOutputType = {
     quantity: number | null
+    rate: number | null
+    gstRate: number | null
   }
 
   export type EnquiryItemSumAggregateOutputType = {
     quantity: number | null
+    rate: number | null
+    gstRate: number | null
   }
 
   export type EnquiryItemMinAggregateOutputType = {
@@ -10410,6 +10547,8 @@ export namespace Prisma {
     productId: string | null
     quantity: number | null
     notes: string | null
+    rate: number | null
+    gstRate: number | null
   }
 
   export type EnquiryItemMaxAggregateOutputType = {
@@ -10418,6 +10557,8 @@ export namespace Prisma {
     productId: string | null
     quantity: number | null
     notes: string | null
+    rate: number | null
+    gstRate: number | null
   }
 
   export type EnquiryItemCountAggregateOutputType = {
@@ -10426,16 +10567,22 @@ export namespace Prisma {
     productId: number
     quantity: number
     notes: number
+    rate: number
+    gstRate: number
     _all: number
   }
 
 
   export type EnquiryItemAvgAggregateInputType = {
     quantity?: true
+    rate?: true
+    gstRate?: true
   }
 
   export type EnquiryItemSumAggregateInputType = {
     quantity?: true
+    rate?: true
+    gstRate?: true
   }
 
   export type EnquiryItemMinAggregateInputType = {
@@ -10444,6 +10591,8 @@ export namespace Prisma {
     productId?: true
     quantity?: true
     notes?: true
+    rate?: true
+    gstRate?: true
   }
 
   export type EnquiryItemMaxAggregateInputType = {
@@ -10452,6 +10601,8 @@ export namespace Prisma {
     productId?: true
     quantity?: true
     notes?: true
+    rate?: true
+    gstRate?: true
   }
 
   export type EnquiryItemCountAggregateInputType = {
@@ -10460,6 +10611,8 @@ export namespace Prisma {
     productId?: true
     quantity?: true
     notes?: true
+    rate?: true
+    gstRate?: true
     _all?: true
   }
 
@@ -10555,6 +10708,8 @@ export namespace Prisma {
     productId: string
     quantity: number
     notes: string | null
+    rate: number | null
+    gstRate: number | null
     _count: EnquiryItemCountAggregateOutputType | null
     _avg: EnquiryItemAvgAggregateOutputType | null
     _sum: EnquiryItemSumAggregateOutputType | null
@@ -10582,6 +10737,8 @@ export namespace Prisma {
     productId?: boolean
     quantity?: boolean
     notes?: boolean
+    rate?: boolean
+    gstRate?: boolean
     enquiry?: boolean | EnquiryDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enquiryItem"]>
@@ -10592,6 +10749,8 @@ export namespace Prisma {
     productId?: boolean
     quantity?: boolean
     notes?: boolean
+    rate?: boolean
+    gstRate?: boolean
     enquiry?: boolean | EnquiryDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enquiryItem"]>
@@ -10602,6 +10761,8 @@ export namespace Prisma {
     productId?: boolean
     quantity?: boolean
     notes?: boolean
+    rate?: boolean
+    gstRate?: boolean
     enquiry?: boolean | EnquiryDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enquiryItem"]>
@@ -10612,9 +10773,11 @@ export namespace Prisma {
     productId?: boolean
     quantity?: boolean
     notes?: boolean
+    rate?: boolean
+    gstRate?: boolean
   }
 
-  export type EnquiryItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "enquiryId" | "productId" | "quantity" | "notes", ExtArgs["result"]["enquiryItem"]>
+  export type EnquiryItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "enquiryId" | "productId" | "quantity" | "notes" | "rate" | "gstRate", ExtArgs["result"]["enquiryItem"]>
   export type EnquiryItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     enquiry?: boolean | EnquiryDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
@@ -10640,6 +10803,8 @@ export namespace Prisma {
       productId: string
       quantity: number
       notes: string | null
+      rate: number | null
+      gstRate: number | null
     }, ExtArgs["result"]["enquiryItem"]>
     composites: {}
   }
@@ -11070,6 +11235,8 @@ export namespace Prisma {
     readonly productId: FieldRef<"EnquiryItem", 'String'>
     readonly quantity: FieldRef<"EnquiryItem", 'Int'>
     readonly notes: FieldRef<"EnquiryItem", 'String'>
+    readonly rate: FieldRef<"EnquiryItem", 'Float'>
+    readonly gstRate: FieldRef<"EnquiryItem", 'Float'>
   }
     
 
@@ -11592,8 +11759,15 @@ export namespace Prisma {
     email: 'email',
     phone: 'phone',
     company: 'company',
+    gstNumber: 'gstNumber',
     message: 'message',
     status: 'status',
+    isQuote: 'isQuote',
+    quoteSubtotal: 'quoteSubtotal',
+    quoteGstTotal: 'quoteGstTotal',
+    quoteGrandTotal: 'quoteGrandTotal',
+    bankDetails: 'bankDetails',
+    quoteSentAt: 'quoteSentAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -11606,7 +11780,9 @@ export namespace Prisma {
     enquiryId: 'enquiryId',
     productId: 'productId',
     quantity: 'quantity',
-    notes: 'notes'
+    notes: 'notes',
+    rate: 'rate',
+    gstRate: 'gstRate'
   };
 
   export type EnquiryItemScalarFieldEnum = (typeof EnquiryItemScalarFieldEnum)[keyof typeof EnquiryItemScalarFieldEnum]
@@ -12123,8 +12299,15 @@ export namespace Prisma {
     email?: StringFilter<"Enquiry"> | string
     phone?: StringNullableFilter<"Enquiry"> | string | null
     company?: StringNullableFilter<"Enquiry"> | string | null
+    gstNumber?: StringNullableFilter<"Enquiry"> | string | null
     message?: StringNullableFilter<"Enquiry"> | string | null
     status?: StringFilter<"Enquiry"> | string
+    isQuote?: BoolFilter<"Enquiry"> | boolean
+    quoteSubtotal?: FloatNullableFilter<"Enquiry"> | number | null
+    quoteGstTotal?: FloatNullableFilter<"Enquiry"> | number | null
+    quoteGrandTotal?: FloatNullableFilter<"Enquiry"> | number | null
+    bankDetails?: StringNullableFilter<"Enquiry"> | string | null
+    quoteSentAt?: DateTimeNullableFilter<"Enquiry"> | Date | string | null
     createdAt?: DateTimeFilter<"Enquiry"> | Date | string
     updatedAt?: DateTimeFilter<"Enquiry"> | Date | string
     items?: EnquiryItemListRelationFilter
@@ -12136,8 +12319,15 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrderInput | SortOrder
     company?: SortOrderInput | SortOrder
+    gstNumber?: SortOrderInput | SortOrder
     message?: SortOrderInput | SortOrder
     status?: SortOrder
+    isQuote?: SortOrder
+    quoteSubtotal?: SortOrderInput | SortOrder
+    quoteGstTotal?: SortOrderInput | SortOrder
+    quoteGrandTotal?: SortOrderInput | SortOrder
+    bankDetails?: SortOrderInput | SortOrder
+    quoteSentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     items?: EnquiryItemOrderByRelationAggregateInput
@@ -12152,8 +12342,15 @@ export namespace Prisma {
     email?: StringFilter<"Enquiry"> | string
     phone?: StringNullableFilter<"Enquiry"> | string | null
     company?: StringNullableFilter<"Enquiry"> | string | null
+    gstNumber?: StringNullableFilter<"Enquiry"> | string | null
     message?: StringNullableFilter<"Enquiry"> | string | null
     status?: StringFilter<"Enquiry"> | string
+    isQuote?: BoolFilter<"Enquiry"> | boolean
+    quoteSubtotal?: FloatNullableFilter<"Enquiry"> | number | null
+    quoteGstTotal?: FloatNullableFilter<"Enquiry"> | number | null
+    quoteGrandTotal?: FloatNullableFilter<"Enquiry"> | number | null
+    bankDetails?: StringNullableFilter<"Enquiry"> | string | null
+    quoteSentAt?: DateTimeNullableFilter<"Enquiry"> | Date | string | null
     createdAt?: DateTimeFilter<"Enquiry"> | Date | string
     updatedAt?: DateTimeFilter<"Enquiry"> | Date | string
     items?: EnquiryItemListRelationFilter
@@ -12165,13 +12362,22 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrderInput | SortOrder
     company?: SortOrderInput | SortOrder
+    gstNumber?: SortOrderInput | SortOrder
     message?: SortOrderInput | SortOrder
     status?: SortOrder
+    isQuote?: SortOrder
+    quoteSubtotal?: SortOrderInput | SortOrder
+    quoteGstTotal?: SortOrderInput | SortOrder
+    quoteGrandTotal?: SortOrderInput | SortOrder
+    bankDetails?: SortOrderInput | SortOrder
+    quoteSentAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: EnquiryCountOrderByAggregateInput
+    _avg?: EnquiryAvgOrderByAggregateInput
     _max?: EnquiryMaxOrderByAggregateInput
     _min?: EnquiryMinOrderByAggregateInput
+    _sum?: EnquirySumOrderByAggregateInput
   }
 
   export type EnquiryScalarWhereWithAggregatesInput = {
@@ -12183,8 +12389,15 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"Enquiry"> | string
     phone?: StringNullableWithAggregatesFilter<"Enquiry"> | string | null
     company?: StringNullableWithAggregatesFilter<"Enquiry"> | string | null
+    gstNumber?: StringNullableWithAggregatesFilter<"Enquiry"> | string | null
     message?: StringNullableWithAggregatesFilter<"Enquiry"> | string | null
     status?: StringWithAggregatesFilter<"Enquiry"> | string
+    isQuote?: BoolWithAggregatesFilter<"Enquiry"> | boolean
+    quoteSubtotal?: FloatNullableWithAggregatesFilter<"Enquiry"> | number | null
+    quoteGstTotal?: FloatNullableWithAggregatesFilter<"Enquiry"> | number | null
+    quoteGrandTotal?: FloatNullableWithAggregatesFilter<"Enquiry"> | number | null
+    bankDetails?: StringNullableWithAggregatesFilter<"Enquiry"> | string | null
+    quoteSentAt?: DateTimeNullableWithAggregatesFilter<"Enquiry"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Enquiry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Enquiry"> | Date | string
   }
@@ -12198,6 +12411,8 @@ export namespace Prisma {
     productId?: StringFilter<"EnquiryItem"> | string
     quantity?: IntFilter<"EnquiryItem"> | number
     notes?: StringNullableFilter<"EnquiryItem"> | string | null
+    rate?: FloatNullableFilter<"EnquiryItem"> | number | null
+    gstRate?: FloatNullableFilter<"EnquiryItem"> | number | null
     enquiry?: XOR<EnquiryScalarRelationFilter, EnquiryWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }
@@ -12208,6 +12423,8 @@ export namespace Prisma {
     productId?: SortOrder
     quantity?: SortOrder
     notes?: SortOrderInput | SortOrder
+    rate?: SortOrderInput | SortOrder
+    gstRate?: SortOrderInput | SortOrder
     enquiry?: EnquiryOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
   }
@@ -12221,6 +12438,8 @@ export namespace Prisma {
     productId?: StringFilter<"EnquiryItem"> | string
     quantity?: IntFilter<"EnquiryItem"> | number
     notes?: StringNullableFilter<"EnquiryItem"> | string | null
+    rate?: FloatNullableFilter<"EnquiryItem"> | number | null
+    gstRate?: FloatNullableFilter<"EnquiryItem"> | number | null
     enquiry?: XOR<EnquiryScalarRelationFilter, EnquiryWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
   }, "id">
@@ -12231,6 +12450,8 @@ export namespace Prisma {
     productId?: SortOrder
     quantity?: SortOrder
     notes?: SortOrderInput | SortOrder
+    rate?: SortOrderInput | SortOrder
+    gstRate?: SortOrderInput | SortOrder
     _count?: EnquiryItemCountOrderByAggregateInput
     _avg?: EnquiryItemAvgOrderByAggregateInput
     _max?: EnquiryItemMaxOrderByAggregateInput
@@ -12247,6 +12468,8 @@ export namespace Prisma {
     productId?: StringWithAggregatesFilter<"EnquiryItem"> | string
     quantity?: IntWithAggregatesFilter<"EnquiryItem"> | number
     notes?: StringNullableWithAggregatesFilter<"EnquiryItem"> | string | null
+    rate?: FloatNullableWithAggregatesFilter<"EnquiryItem"> | number | null
+    gstRate?: FloatNullableWithAggregatesFilter<"EnquiryItem"> | number | null
   }
 
   export type AdminUserCreateInput = {
@@ -12738,8 +12961,15 @@ export namespace Prisma {
     email: string
     phone?: string | null
     company?: string | null
+    gstNumber?: string | null
     message?: string | null
     status?: string
+    isQuote?: boolean
+    quoteSubtotal?: number | null
+    quoteGstTotal?: number | null
+    quoteGrandTotal?: number | null
+    bankDetails?: string | null
+    quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: EnquiryItemCreateNestedManyWithoutEnquiryInput
@@ -12751,8 +12981,15 @@ export namespace Prisma {
     email: string
     phone?: string | null
     company?: string | null
+    gstNumber?: string | null
     message?: string | null
     status?: string
+    isQuote?: boolean
+    quoteSubtotal?: number | null
+    quoteGstTotal?: number | null
+    quoteGrandTotal?: number | null
+    bankDetails?: string | null
+    quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     items?: EnquiryItemUncheckedCreateNestedManyWithoutEnquiryInput
@@ -12764,8 +13001,15 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
     message?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isQuote?: BoolFieldUpdateOperationsInput | boolean
+    quoteSubtotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: EnquiryItemUpdateManyWithoutEnquiryNestedInput
@@ -12777,8 +13021,15 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
     message?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isQuote?: BoolFieldUpdateOperationsInput | boolean
+    quoteSubtotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: EnquiryItemUncheckedUpdateManyWithoutEnquiryNestedInput
@@ -12790,8 +13041,15 @@ export namespace Prisma {
     email: string
     phone?: string | null
     company?: string | null
+    gstNumber?: string | null
     message?: string | null
     status?: string
+    isQuote?: boolean
+    quoteSubtotal?: number | null
+    quoteGstTotal?: number | null
+    quoteGrandTotal?: number | null
+    bankDetails?: string | null
+    quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12802,8 +13060,15 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
     message?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isQuote?: BoolFieldUpdateOperationsInput | boolean
+    quoteSubtotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12814,8 +13079,15 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
     message?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isQuote?: BoolFieldUpdateOperationsInput | boolean
+    quoteSubtotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12824,6 +13096,8 @@ export namespace Prisma {
     id?: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
     enquiry: EnquiryCreateNestedOneWithoutItemsInput
     product: ProductCreateNestedOneWithoutEnquiryItemsInput
   }
@@ -12834,12 +13108,16 @@ export namespace Prisma {
     productId: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
   }
 
   export type EnquiryItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
     enquiry?: EnquiryUpdateOneRequiredWithoutItemsNestedInput
     product?: ProductUpdateOneRequiredWithoutEnquiryItemsNestedInput
   }
@@ -12850,6 +13128,8 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type EnquiryItemCreateManyInput = {
@@ -12858,12 +13138,16 @@ export namespace Prisma {
     productId: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
   }
 
   export type EnquiryItemUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type EnquiryItemUncheckedUpdateManyInput = {
@@ -12872,6 +13156,8 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -13265,16 +13551,51 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type EnquiryCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     phone?: SortOrder
     company?: SortOrder
+    gstNumber?: SortOrder
     message?: SortOrder
     status?: SortOrder
+    isQuote?: SortOrder
+    quoteSubtotal?: SortOrder
+    quoteGstTotal?: SortOrder
+    quoteGrandTotal?: SortOrder
+    bankDetails?: SortOrder
+    quoteSentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EnquiryAvgOrderByAggregateInput = {
+    quoteSubtotal?: SortOrder
+    quoteGstTotal?: SortOrder
+    quoteGrandTotal?: SortOrder
   }
 
   export type EnquiryMaxOrderByAggregateInput = {
@@ -13283,8 +13604,15 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     company?: SortOrder
+    gstNumber?: SortOrder
     message?: SortOrder
     status?: SortOrder
+    isQuote?: SortOrder
+    quoteSubtotal?: SortOrder
+    quoteGstTotal?: SortOrder
+    quoteGrandTotal?: SortOrder
+    bankDetails?: SortOrder
+    quoteSentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -13295,10 +13623,53 @@ export namespace Prisma {
     email?: SortOrder
     phone?: SortOrder
     company?: SortOrder
+    gstNumber?: SortOrder
     message?: SortOrder
     status?: SortOrder
+    isQuote?: SortOrder
+    quoteSubtotal?: SortOrder
+    quoteGstTotal?: SortOrder
+    quoteGrandTotal?: SortOrder
+    bankDetails?: SortOrder
+    quoteSentAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EnquirySumOrderByAggregateInput = {
+    quoteSubtotal?: SortOrder
+    quoteGstTotal?: SortOrder
+    quoteGrandTotal?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnquiryScalarRelationFilter = {
@@ -13312,10 +13683,14 @@ export namespace Prisma {
     productId?: SortOrder
     quantity?: SortOrder
     notes?: SortOrder
+    rate?: SortOrder
+    gstRate?: SortOrder
   }
 
   export type EnquiryItemAvgOrderByAggregateInput = {
     quantity?: SortOrder
+    rate?: SortOrder
+    gstRate?: SortOrder
   }
 
   export type EnquiryItemMaxOrderByAggregateInput = {
@@ -13324,6 +13699,8 @@ export namespace Prisma {
     productId?: SortOrder
     quantity?: SortOrder
     notes?: SortOrder
+    rate?: SortOrder
+    gstRate?: SortOrder
   }
 
   export type EnquiryItemMinOrderByAggregateInput = {
@@ -13332,10 +13709,14 @@ export namespace Prisma {
     productId?: SortOrder
     quantity?: SortOrder
     notes?: SortOrder
+    rate?: SortOrder
+    gstRate?: SortOrder
   }
 
   export type EnquiryItemSumOrderByAggregateInput = {
     quantity?: SortOrder
+    rate?: SortOrder
+    gstRate?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -13586,6 +13967,18 @@ export namespace Prisma {
     connect?: EnquiryItemWhereUniqueInput | EnquiryItemWhereUniqueInput[]
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type EnquiryItemUpdateManyWithoutEnquiryNestedInput = {
     create?: XOR<EnquiryItemCreateWithoutEnquiryInput, EnquiryItemUncheckedCreateWithoutEnquiryInput> | EnquiryItemCreateWithoutEnquiryInput[] | EnquiryItemUncheckedCreateWithoutEnquiryInput[]
     connectOrCreate?: EnquiryItemCreateOrConnectWithoutEnquiryInput | EnquiryItemCreateOrConnectWithoutEnquiryInput[]
@@ -13791,6 +14184,58 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type ProductCreateWithoutCategoryInput = {
     id?: string
     name: string
@@ -13950,6 +14395,8 @@ export namespace Prisma {
     id?: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
     enquiry: EnquiryCreateNestedOneWithoutItemsInput
   }
 
@@ -13958,6 +14405,8 @@ export namespace Prisma {
     enquiryId: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
   }
 
   export type EnquiryItemCreateOrConnectWithoutProductInput = {
@@ -14041,6 +14490,8 @@ export namespace Prisma {
     productId?: StringFilter<"EnquiryItem"> | string
     quantity?: IntFilter<"EnquiryItem"> | number
     notes?: StringNullableFilter<"EnquiryItem"> | string | null
+    rate?: FloatNullableFilter<"EnquiryItem"> | number | null
+    gstRate?: FloatNullableFilter<"EnquiryItem"> | number | null
   }
 
   export type ProductCreateWithoutUseCasesInput = {
@@ -14179,6 +14630,8 @@ export namespace Prisma {
     id?: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
     product: ProductCreateNestedOneWithoutEnquiryItemsInput
   }
 
@@ -14187,6 +14640,8 @@ export namespace Prisma {
     productId: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
   }
 
   export type EnquiryItemCreateOrConnectWithoutEnquiryInput = {
@@ -14220,8 +14675,15 @@ export namespace Prisma {
     email: string
     phone?: string | null
     company?: string | null
+    gstNumber?: string | null
     message?: string | null
     status?: string
+    isQuote?: boolean
+    quoteSubtotal?: number | null
+    quoteGstTotal?: number | null
+    quoteGrandTotal?: number | null
+    bankDetails?: string | null
+    quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14232,8 +14694,15 @@ export namespace Prisma {
     email: string
     phone?: string | null
     company?: string | null
+    gstNumber?: string | null
     message?: string | null
     status?: string
+    isQuote?: boolean
+    quoteSubtotal?: number | null
+    quoteGstTotal?: number | null
+    quoteGrandTotal?: number | null
+    bankDetails?: string | null
+    quoteSentAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14295,8 +14764,15 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
     message?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isQuote?: BoolFieldUpdateOperationsInput | boolean
+    quoteSubtotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14307,8 +14783,15 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     company?: NullableStringFieldUpdateOperationsInput | string | null
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
     message?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isQuote?: BoolFieldUpdateOperationsInput | boolean
+    quoteSubtotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGstTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    quoteGrandTotal?: NullableFloatFieldUpdateOperationsInput | number | null
+    bankDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14435,6 +14918,8 @@ export namespace Prisma {
     enquiryId: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
   }
 
   export type ProductUseCaseUpdateWithoutProductInput = {
@@ -14453,6 +14938,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
     enquiry?: EnquiryUpdateOneRequiredWithoutItemsNestedInput
   }
 
@@ -14461,6 +14948,8 @@ export namespace Prisma {
     enquiryId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type EnquiryItemUncheckedUpdateManyWithoutProductInput = {
@@ -14468,6 +14957,8 @@ export namespace Prisma {
     enquiryId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type EnquiryItemCreateManyEnquiryInput = {
@@ -14475,12 +14966,16 @@ export namespace Prisma {
     productId: string
     quantity?: number
     notes?: string | null
+    rate?: number | null
+    gstRate?: number | null
   }
 
   export type EnquiryItemUpdateWithoutEnquiryInput = {
     id?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
     product?: ProductUpdateOneRequiredWithoutEnquiryItemsNestedInput
   }
 
@@ -14489,6 +14984,8 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type EnquiryItemUncheckedUpdateManyWithoutEnquiryInput = {
@@ -14496,6 +14993,8 @@ export namespace Prisma {
     productId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     notes?: NullableStringFieldUpdateOperationsInput | string | null
+    rate?: NullableFloatFieldUpdateOperationsInput | number | null
+    gstRate?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
 

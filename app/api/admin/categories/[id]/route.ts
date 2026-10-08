@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import prisma from "@/lib/prisma";
+import {
+  getCategoryByIdOrSlugQuery,
+  updateCategoryQuery,
+  deleteCategoryQuery,
+} from "@/modules/categories";
 
 export async function GET(
   _req: NextRequest,
@@ -8,18 +12,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-
-    const category = await prisma.category.findFirst({
-      where: {
-        OR: [{ id }, { slug: id }],
-      },
-      include: {
-        products: true,
-        _count: {
-          select: { products: true },
-        },
-      },
-    });
+    const category = await getCategoryByIdOrSlugQuery(id, { includeProducts: true });
 
     if (!category) {
       return NextResponse.json(
@@ -43,7 +36,9 @@ export async function PUT(
   try {
     const token = await getToken({
       req,
-      secret: process.env.NEXTAUTH_SECRET || "commercial-engineering-associates-dev-secret-key-32chars-min",
+      secret:
+        process.env.NEXTAUTH_SECRET ||
+        "commercial-engineering-associates-dev-secret-key-32chars-min",
     });
 
     if (!token) {
@@ -52,53 +47,18 @@ export async function PUT(
 
     const { id } = await params;
     const body = await req.json();
-    const { name, slug, description, imageUrl } = body;
 
-    const existing = await prisma.category.findUnique({
-      where: { id },
-    });
-
-    if (!existing) {
-      return NextResponse.json(
-        { error: "Category not found" },
-        { status: 404 }
-      );
-    }
-
-    const updatedSlug = slug
-      ? slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "")
-      : name
-      ? name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "")
-      : existing.slug;
-
-    // Check slug collision if slug changed
-    if (updatedSlug !== existing.slug) {
-      const slugConflict = await prisma.category.findUnique({
-        where: { slug: updatedSlug },
-      });
-      if (slugConflict && slugConflict.id !== id) {
-        return NextResponse.json(
-          { error: `Slug "${updatedSlug}" is already in use` },
-          { status: 409 }
-        );
-      }
-    }
-
-    const updated = await prisma.category.update({
-      where: { id },
-      data: {
-        ...(name && { name: name.trim() }),
-        slug: updatedSlug,
-        description: description !== undefined ? description?.trim() || null : undefined,
-        imageUrl: imageUrl !== undefined ? imageUrl?.trim() || null : undefined,
-      },
-    });
-
+    const updated = await updateCategoryQuery(id, body);
     return NextResponse.json(updated);
   } catch (error: unknown) {
     console.error("[Category PUT [id] Error]:", error);
     const msg = error instanceof Error ? error.message : "Failed to update category";
-    return NextResponse.json({ error: msg }, { status: 500 });
+    const status = msg.includes("already in use")
+      ? 409
+      : msg.includes("not found")
+      ? 404
+      : 500;
+    return NextResponse.json({ error: msg }, { status });
   }
 }
 
@@ -109,7 +69,9 @@ export async function DELETE(
   try {
     const token = await getToken({
       req,
-      secret: process.env.NEXTAUTH_SECRET || "commercial-engineering-associates-dev-secret-key-32chars-min",
+      secret:
+        process.env.NEXTAUTH_SECRET ||
+        "commercial-engineering-associates-dev-secret-key-32chars-min",
     });
 
     if (!token) {
@@ -117,26 +79,12 @@ export async function DELETE(
     }
 
     const { id } = await params;
-
-    const existing = await prisma.category.findUnique({
-      where: { id },
-    });
-
-    if (!existing) {
-      return NextResponse.json(
-        { error: "Category not found" },
-        { status: 404 }
-      );
-    }
-
-    await prisma.category.delete({
-      where: { id },
-    });
-
+    await deleteCategoryQuery(id);
     return NextResponse.json({ success: true, message: "Category deleted" });
   } catch (error: unknown) {
     console.error("[Category DELETE [id] Error]:", error);
     const msg = error instanceof Error ? error.message : "Failed to delete category";
-    return NextResponse.json({ error: msg }, { status: 500 });
+    const status = msg.includes("not found") ? 404 : 500;
+    return NextResponse.json({ error: msg }, { status });
   }
 }

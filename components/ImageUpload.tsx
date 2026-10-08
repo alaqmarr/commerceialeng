@@ -5,7 +5,7 @@ import { useDropzone } from "react-dropzone";
 import {
   UploadCloud,
   X,
-  Loader2,
+  Loader,
   CheckCircle2,
   AlertCircle,
   ExternalLink,
@@ -38,7 +38,6 @@ export default function ImageUpload({
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       if (acceptedFiles.length === 0) return;
-
       const file = acceptedFiles[0];
       setError(null);
       setUploading(true);
@@ -49,16 +48,9 @@ export default function ImageUpload({
         formData.append("file", file);
         formData.append("folder", folder);
 
-        const res = await fetch("/api/admin/upload", {
-          method: "POST",
-          body: formData,
-        });
-
+        const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
         const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Failed to upload image");
-        }
+        if (!res.ok) throw new Error(data.error || "Failed to upload image");
 
         if (data.url) {
           onChange(data.url);
@@ -88,11 +80,10 @@ export default function ImageUpload({
       "image/svg+xml": [".svg"],
     },
     maxFiles: 1,
-    maxSize: 10 * 1024 * 1024, // 10MB limit
+    maxSize: 10 * 1024 * 1024,
     disabled: disabled || uploading,
     onDropRejected: (rejections) => {
-      const firstError = rejections[0]?.errors[0]?.message || "Invalid file";
-      setError(firstError);
+      setError(rejections[0]?.errors[0]?.message || "Invalid file");
     },
   });
 
@@ -118,24 +109,17 @@ export default function ImageUpload({
         </div>
       )}
 
-      {/* Existing Image Preview Card */}
       {value ? (
         <div className="relative group rounded-xl border border-gray-200 bg-white p-3 flex flex-col sm:flex-row items-center gap-4 shadow-sm">
-          <div className="relative w-28 h-28 sm:w-24 sm:h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0 flex items-center justify-center">
+          <div className="relative w-28 h-28 sm:w-24 sm:h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 shrink-0 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={value}
-              alt="Uploaded preview"
-              className="w-full h-full object-contain"
-            />
+            <img src={value} alt="Uploaded preview" className="w-full h-full object-contain" />
           </div>
 
           <div className="flex-1 min-w-0 w-full space-y-1.5">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-              <span className="text-xs font-semibold text-gray-800">
-                Image Uploaded
-              </span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span className="text-xs font-semibold text-gray-800">Image Uploaded</span>
             </div>
             <p className="text-[11px] font-sans text-gray-600 break-all line-clamp-2 bg-gray-50 p-1.5 rounded border border-gray-200">
               {value}
@@ -163,7 +147,6 @@ export default function ImageUpload({
           </div>
         </div>
       ) : (
-        /* Dropzone Active Area */
         <div
           {...getRootProps()}
           data-testid="dropzone"
@@ -176,11 +159,10 @@ export default function ImageUpload({
           } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           <input {...getInputProps()} />
-
           <div className="flex flex-col items-center justify-center gap-2">
             {uploading ? (
               <div className="flex flex-col items-center gap-2 py-2">
-                <Loader2 className="w-8 h-8 text-red-600 animate-spin" />
+                <Loader className="w-8 h-8 text-red-600 animate-spin" />
                 <span className="text-xs font-sans text-red-600 animate-pulse">
                   {progressText || "Uploading to Cloudflare R2..."}
                 </span>
@@ -188,17 +170,11 @@ export default function ImageUpload({
             ) : (
               <>
                 <div className="p-3 rounded-full bg-red-50 text-red-600 group-hover:scale-110 transition-transform">
-                  {isDragActive ? (
-                    <UploadCloud className="w-6 h-6 text-red-600 animate-bounce" />
-                  ) : (
-                    <ImageIcon className="w-6 h-6" />
-                  )}
+                  {isDragActive ? <UploadCloud className="w-6 h-6 text-red-600 animate-bounce" /> : <ImageIcon className="w-6 h-6" />}
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-800">
-                    {isDragActive
-                      ? "Drop the image here to upload"
-                      : "Drag & drop image here, or click to browse"}
+                    {isDragActive ? "Drop the image here to upload" : "Drag & drop image here, or click to browse"}
                   </p>
                   <p className="text-[11px] text-gray-500 mt-1 font-sans">
                     Supports PNG, JPG, WEBP, GIF, SVG up to 10MB
@@ -210,10 +186,9 @@ export default function ImageUpload({
         </div>
       )}
 
-      {/* Error Notice */}
       {error && (
         <div className="flex items-center gap-2 text-xs text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-lg font-sans">
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import prisma from "@/lib/prisma";
+import {
+  getHeroSlideByIdQuery,
+  updateHeroSlideQuery,
+  deleteHeroSlideQuery,
+} from "@/modules/hero";
 
 export async function GET(
   _req: NextRequest,
@@ -9,9 +13,7 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const hero = await prisma.heroImage.findUnique({
-      where: { id },
-    });
+    const hero = await getHeroSlideByIdQuery(id);
 
     if (!hero) {
       return NextResponse.json(
@@ -46,9 +48,7 @@ export async function PUT(
     const body = await req.json();
     const { title, subtitle, imageUrl, linkUrl, order, active } = body;
 
-    const existing = await prisma.heroImage.findUnique({
-      where: { id },
-    });
+    const existing = await getHeroSlideByIdQuery(id);
 
     if (!existing) {
       return NextResponse.json(
@@ -57,18 +57,15 @@ export async function PUT(
       );
     }
 
-    const updated = await prisma.heroImage.update({
-      where: { id },
-      data: {
-        ...(title && { title: title.trim() }),
-        ...(subtitle !== undefined && { subtitle: subtitle?.trim() || null }),
-        ...(imageUrl && { imageUrl: imageUrl.trim() }),
-        ...(linkUrl !== undefined && { linkUrl: linkUrl?.trim() || null }),
-        ...(order !== undefined && {
-          order: typeof order === "number" ? order : parseInt(order, 10) || 0,
-        }),
-        ...(active !== undefined && { active: Boolean(active) }),
-      },
+    const updated = await updateHeroSlideQuery(id, {
+      ...(title !== undefined && { title: title.trim() }),
+      ...(subtitle !== undefined && { subtitle: subtitle?.trim() || null }),
+      ...(imageUrl !== undefined && { imageUrl: imageUrl.trim() }),
+      ...(linkUrl !== undefined && { linkUrl: linkUrl?.trim() || null }),
+      ...(order !== undefined && {
+        order: typeof order === "number" ? order : parseInt(order, 10) || 0,
+      }),
+      ...(active !== undefined && { active: Boolean(active) }),
     });
 
     return NextResponse.json(updated);
@@ -95,9 +92,7 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const existing = await prisma.heroImage.findUnique({
-      where: { id },
-    });
+    const existing = await getHeroSlideByIdQuery(id);
 
     if (!existing) {
       return NextResponse.json(
@@ -106,9 +101,7 @@ export async function DELETE(
       );
     }
 
-    await prisma.heroImage.delete({
-      where: { id },
-    });
+    await deleteHeroSlideQuery(id);
 
     return NextResponse.json({ success: true, message: "Hero slide deleted" });
   } catch (error: unknown) {

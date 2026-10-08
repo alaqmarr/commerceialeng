@@ -13,6 +13,8 @@ import {
   Mail,
   LayoutDashboard,
   ExternalLink,
+  BarChart3,
+  Users,
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -36,11 +38,13 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 
   const navLinks = [
     { href: "/admin", label: "Overview", icon: LayoutDashboard },
+    { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { href: "/admin/products", label: "Products", icon: Package },
     { href: "/admin/categories", label: "Categories", icon: FolderTree },
     { href: "/admin/use-cases", label: "Use-Cases", icon: Layers },
     { href: "/admin/hero", label: "Hero Slides", icon: ImageIcon },
     { href: "/admin/enquiries", label: "Enquiries", icon: Mail },
+    { href: "/admin/users", label: "Users", icon: Users },
     { href: "/admin/settings", label: "Settings", icon: Settings },
   ];
 

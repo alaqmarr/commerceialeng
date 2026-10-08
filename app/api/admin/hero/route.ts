@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
-import prisma from "@/lib/prisma";
+import { getHeroSlidesQuery, createHeroSlideQuery, validateHeroSlideInput } from "@/modules/hero";
 
 export async function GET() {
   try {
-    const heroes = await prisma.heroImage.findMany({
-      orderBy: { order: "asc" },
-    });
-
+    const heroes = await getHeroSlidesQuery();
     return NextResponse.json(heroes);
   } catch (error: unknown) {
     console.error("[Hero GET Error]:", error);
@@ -28,36 +25,12 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, subtitle, imageUrl, linkUrl, order, active } = body;
-
-    if (!title || typeof title !== "string" || !title.trim()) {
-      return NextResponse.json(
-        { error: "Slide title is required" },
-        { status: 400 }
-      );
+    const validation = validateHeroSlideInput(body);
+    if (!validation.isValid) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    if (!imageUrl || typeof imageUrl !== "string" || !imageUrl.trim()) {
-      return NextResponse.json(
-        { error: "Slide image URL is required" },
-        { status: 400 }
-      );
-    }
-
-    const parsedOrder = typeof order === "number" ? order : parseInt(order || "0", 10) || 0;
-    const parsedActive = active !== undefined ? Boolean(active) : true;
-
-    const hero = await prisma.heroImage.create({
-      data: {
-        title: title.trim(),
-        subtitle: subtitle?.trim() || null,
-        imageUrl: imageUrl.trim(),
-        linkUrl: linkUrl?.trim() || null,
-        order: parsedOrder,
-        active: parsedActive,
-      },
-    });
-
+    const hero = await createHeroSlideQuery(body);
     return NextResponse.json(hero, { status: 201 });
   } catch (error: unknown) {
     console.error("[Hero POST Error]:", error);

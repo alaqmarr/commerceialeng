@@ -190,8 +190,15 @@ exports.Prisma.EnquiryScalarFieldEnum = {
   email: 'email',
   phone: 'phone',
   company: 'company',
+  gstNumber: 'gstNumber',
   message: 'message',
   status: 'status',
+  isQuote: 'isQuote',
+  quoteSubtotal: 'quoteSubtotal',
+  quoteGstTotal: 'quoteGstTotal',
+  quoteGrandTotal: 'quoteGrandTotal',
+  bankDetails: 'bankDetails',
+  quoteSentAt: 'quoteSentAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -201,7 +208,9 @@ exports.Prisma.EnquiryItemScalarFieldEnum = {
   enquiryId: 'enquiryId',
   productId: 'productId',
   quantity: 'quantity',
-  notes: 'notes'
+  notes: 'notes',
+  rate: 'rate',
+  gstRate: 'gstRate'
 };
 
 exports.Prisma.SortOrder = {
